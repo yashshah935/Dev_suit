@@ -1,65 +1,128 @@
-import Image from "next/image";
+import Link from "next/link";
 
-export default function Home() {
+interface ToolInfo {
+  id: string;
+  name: string;
+  description: string;
+  path: string;
+  icon: string;
+  badge?: string;
+  nodeBackend: boolean;
+}
+
+const TOOLS: ToolInfo[] = [
+  {
+    id: "json-formatter",
+    name: "JSON Formatter & Validator",
+    description: "Format, beautify, minify, and validate JSON inputs with detailed syntax error highlighting.",
+    path: "/json-formatter",
+    icon: "🗂️",
+    nodeBackend: false,
+  },
+  {
+    id: "xml-to-json",
+    name: "XML to JSON Converter",
+    description: "Convert XML data structures into parsed JSON format with deep hierarchy representation using Node.js.",
+    path: "/xml-to-json",
+    icon: "🔌",
+    badge: "Node Backend",
+    nodeBackend: true,
+  },
+  {
+    id: "json-to-xml",
+    name: "JSON to XML Converter",
+    description: "Convert structured JSON data into cleanly formatted XML declarations using Node.js.",
+    path: "/json-to-xml",
+    icon: "📝",
+    badge: "Node Backend",
+    nodeBackend: true,
+  },
+  {
+    id: "base64",
+    name: "Base64 Encoder & Decoder",
+    description: "Encode text to Base64 format or decode Base64 strings back to readable text instantly.",
+    path: "/base64",
+    icon: "🔐",
+    nodeBackend: false,
+  },
+  {
+    id: "url-encode",
+    name: "URL Encoder & Decoder",
+    description: "Convert special characters in text to URL-encoded percentage representations and back.",
+    path: "/url-encode",
+    icon: "🔗",
+    nodeBackend: false,
+  },
+  {
+    id: "sip-calculator",
+    name: "SIP Calculator with Inflation",
+    description: "Calculate compound interest returns for Systemic Investment Plans adjusted for annual inflation.",
+    path: "/sip-calculator",
+    icon: "📈",
+    nodeBackend: false,
+  },
+  {
+    id: "mp4-to-mp3",
+    name: "MP4 to MP3 Converter",
+    description: "Upload an MP4 video file and extract its audio stream directly as a downloadable MP3 using Node.js & FFmpeg.",
+    path: "/mp4-to-mp3",
+    icon: "🎵",
+    badge: "Node Backend",
+    nodeBackend: true,
+  },
+  {
+    id: "voice-text",
+    name: "Voice & Text Converter",
+    description: "Convert speech to written text in real-time or vocalize text inputs into speech using Web Speech APIs.",
+    path: "/voice-text",
+    icon: "🗣️",
+    nodeBackend: false,
+  },
+];
+
+export default function Dashboard() {
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
-        </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
-      </main>
+    <div className="dashboard-view">
+      <section className="dashboard-title-section">
+        <h1 className="dashboard-title">Developer Tool Suite</h1>
+        <p className="dashboard-subtitle">
+          An aesthetic, high-fidelity toolbox for formatting, converting, and processing data. Pure client-side speed combined with Node.js backend power.
+        </p>
+      </section>
+
+      <div className="grid-tools">
+        {TOOLS.map((tool) => (
+          <Link href={tool.path} key={tool.id} className="tool-card">
+            <div className="tool-icon-wrapper">{tool.icon}</div>
+            <h2 className="tool-card-title">{tool.name}</h2>
+            <p className="tool-card-desc">{tool.description}</p>
+            
+            <div className="tool-card-action">
+              <span>Open Tool</span>
+              <span>&rarr;</span>
+            </div>
+            
+            {tool.badge && (
+              <span
+                style={{
+                  position: "absolute",
+                  top: "1rem",
+                  right: "1rem",
+                  background: "rgba(0, 242, 254, 0.1)",
+                  border: "1px solid rgba(0, 242, 254, 0.3)",
+                  color: "var(--neon-cyan)",
+                  fontSize: "0.75rem",
+                  padding: "0.25rem 0.5rem",
+                  borderRadius: "20px",
+                  fontWeight: 600,
+                }}
+              >
+                {tool.badge}
+              </span>
+            )}
+          </Link>
+        ))}
+      </div>
     </div>
   );
 }
