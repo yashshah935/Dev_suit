@@ -62,15 +62,6 @@ const TOOLS: ToolInfo[] = [
     nodeBackend: false,
   },
   {
-    id: "mp4-to-mp3",
-    name: "MP4 to MP3 Converter",
-    description: "Upload an MP4 video file and extract its audio stream directly as a downloadable MP3 using Node.js & FFmpeg.",
-    path: "/mp4-to-mp3",
-    icon: "🎵",
-    badge: "Node Backend",
-    nodeBackend: true,
-  },
-  {
     id: "voice-text",
     name: "Voice & Text Converter",
     description: "Convert speech to written text in real-time or vocalize text inputs into speech using Web Speech APIs.",
