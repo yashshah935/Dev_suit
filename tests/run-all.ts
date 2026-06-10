@@ -4,7 +4,8 @@ import { NextRequest, NextResponse } from "next/server";
 // Import backend API routes
 import { POST as xmlToJsonHandler } from "../src/app/api/xml-to-json/route";
 import { POST as jsonToXmlHandler } from "../src/app/api/json-to-xml/route";
-import { POST as mp4ToMp3Handler } from "../src/app/api/mp4-to-mp3/route";
+import { POST as textToSpeechHandler } from "../src/app/api/text-to-speech/route";
+import { parseMarkdown } from "../src/app/utils/markdown";
 
 const PASSED = " \x1b[32m✔\x1b[0m";
 const FAILED = " \x1b[31m✘\x1b[0m";
@@ -70,11 +71,11 @@ async function main() {
           String.fromCharCode(parseInt(p1, 16))
         )
       );
-      assert.equal(encoded, "QW50aWdyYXZpdHkgRGV2U3VpdGUg8J+agA==");
+      assert.equal(encoded, "RGV2ZWxvcGVyIERldlN1aXRlIPCfmoA=");
     }),
 
     runTest("Base64 - Decode ciphered text", () => {
-      const encoded = "QW50aWdyYXZpdHkgRGV2U3VpdGUg8J+agA==";
+      const encoded = "RGV2ZWxvcGVyIERldlN1aXRlIPCfmoA=";
       const decoded = decodeURIComponent(
         atob(encoded)
           .split("")
@@ -190,55 +191,20 @@ async function main() {
       assert.equal(supportedLangs.length, 7);
     }),
 
-    // 9. MP4 to MP3 Converter API
-    runTest("API - MP4 to MP3 validation error (no file)", async () => {
-      const req = new NextRequest("http://localhost/api/mp4-to-mp3", {
-        method: "POST",
-        body: new FormData(),
-      });
-      const res = await mp4ToMp3Handler(req);
-      assert.equal(res.status, 400);
-      const data = await res.json();
-      assert.ok(data.error);
-      assert.equal(data.error, "No file uploaded.");
-    }),
+    runTest("API - Text to Speech generation", async () => {
+      const req1 = createRequest("http://localhost/api/text-to-speech", "POST", { text: "Hello", lang: "en-US" });
+      const res1 = await textToSpeechHandler(req1);
+      assert.equal(res1.status, 200);
+      assert.equal(res1.headers.get("Content-Type"), "audio/mpeg");
+      const arrayBuffer1 = await res1.arrayBuffer();
+      assert.ok(arrayBuffer1.byteLength > 0);
 
-    runTest("API - MP4 to MP3 conversion (valid file)", async () => {
-      const { execSync } = require("child_process");
-      const fs = require("fs");
-      const path = require("path");
-      const os = require("os");
-
-      const tempMp4 = path.join(os.tmpdir(), `test_silent_${Date.now()}.mp4`);
-      try {
-        execSync(`ffmpeg -y -f lavfi -i anullsrc=r=44100:cl=mono -t 0.2 "${tempMp4}"`, { stdio: "ignore" });
-      } catch (err) {
-        console.warn("Skipping real MP4 to MP3 conversion: ffmpeg not in PATH or failed to generate test file");
-        return;
-      }
-
-      try {
-        const mp4Buffer = fs.readFileSync(tempMp4);
-        const file = new File([mp4Buffer], "test.mp4", { type: "video/mp4" });
-        const formData = new FormData();
-        formData.append("file", file);
-        formData.append("bitrate", "128");
-
-        const req = new NextRequest("http://localhost/api/mp4-to-mp3", {
-          method: "POST",
-          body: formData,
-        });
-
-        const res = await mp4ToMp3Handler(req);
-        assert.equal(res.status, 200);
-        assert.equal(res.headers.get("content-type"), "audio/mpeg");
-        const bodyBuffer = Buffer.from(await res.arrayBuffer());
-        assert.ok(bodyBuffer.length > 0);
-      } finally {
-        if (fs.existsSync(tempMp4)) {
-          fs.unlinkSync(tempMp4);
-        }
-      }
+      const req2 = createRequest("http://localhost/api/text-to-speech", "POST", { text: "नमस्ते", lang: "hi-IN" });
+      const res2 = await textToSpeechHandler(req2);
+      assert.equal(res2.status, 200);
+      assert.equal(res2.headers.get("Content-Type"), "audio/mpeg");
+      const arrayBuffer2 = await res2.arrayBuffer();
+      assert.ok(arrayBuffer2.byteLength > 0);
     }),
 
     // 10. Editor Error Line Parser Logic
@@ -270,6 +236,29 @@ async function main() {
 
       assert.equal(lineV8, 6);
       assert.equal(lineFx, 6);
+    }),
+
+    // 11. Markdown Parser Logic
+    runTest("Markdown Parser - Headings, styles, lists, and tables", () => {
+      const mdInput = "# Main Title\n" +
+        "This is **bold** and *italic*.\n" +
+        "- Item 1\n" +
+        "- Item 2\n" +
+        "\n" +
+        "| Header 1 | Header 2 |\n" +
+        "|---|---|\n" +
+        "| Cell A | Cell B |";
+      
+      const htmlOutput = parseMarkdown(mdInput);
+      
+      assert.ok(htmlOutput.includes("<h1>Main Title</h1>"));
+      assert.ok(htmlOutput.includes("<strong>bold</strong>"));
+      assert.ok(htmlOutput.includes("<em>italic</em>"));
+      assert.ok(htmlOutput.includes("<ul>"));
+      assert.ok(htmlOutput.includes("<li>Item 1</li>"));
+      assert.ok(htmlOutput.includes("<table>"));
+      assert.ok(htmlOutput.includes("<th>Header 1</th>"));
+      assert.ok(htmlOutput.includes("<td>Cell A</td>"));
     }),
   ];
 
