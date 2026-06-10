@@ -4,6 +4,8 @@ import { NextRequest, NextResponse } from "next/server";
 // Import backend API routes
 import { POST as xmlToJsonHandler } from "../src/app/api/xml-to-json/route";
 import { POST as jsonToXmlHandler } from "../src/app/api/json-to-xml/route";
+import { POST as textToSpeechHandler } from "../src/app/api/text-to-speech/route";
+import { parseMarkdown } from "../src/app/utils/markdown";
 
 const PASSED = " \x1b[32m✔\x1b[0m";
 const FAILED = " \x1b[31m✘\x1b[0m";
@@ -189,6 +191,22 @@ async function main() {
       assert.equal(supportedLangs.length, 7);
     }),
 
+    runTest("API - Text to Speech generation", async () => {
+      const req1 = createRequest("http://localhost/api/text-to-speech", "POST", { text: "Hello", lang: "en-US" });
+      const res1 = await textToSpeechHandler(req1);
+      assert.equal(res1.status, 200);
+      assert.equal(res1.headers.get("Content-Type"), "audio/mpeg");
+      const arrayBuffer1 = await res1.arrayBuffer();
+      assert.ok(arrayBuffer1.byteLength > 0);
+
+      const req2 = createRequest("http://localhost/api/text-to-speech", "POST", { text: "नमस्ते", lang: "hi-IN" });
+      const res2 = await textToSpeechHandler(req2);
+      assert.equal(res2.status, 200);
+      assert.equal(res2.headers.get("Content-Type"), "audio/mpeg");
+      const arrayBuffer2 = await res2.arrayBuffer();
+      assert.ok(arrayBuffer2.byteLength > 0);
+    }),
+
     // 10. Editor Error Line Parser Logic
     runTest("Editor Error Line Parser - V8 and Firefox patterns", () => {
       const getJsonErrorLine = (errorMsg: string, inputVal: string): number | null => {
@@ -218,6 +236,29 @@ async function main() {
 
       assert.equal(lineV8, 6);
       assert.equal(lineFx, 6);
+    }),
+
+    // 11. Markdown Parser Logic
+    runTest("Markdown Parser - Headings, styles, lists, and tables", () => {
+      const mdInput = "# Main Title\n" +
+        "This is **bold** and *italic*.\n" +
+        "- Item 1\n" +
+        "- Item 2\n" +
+        "\n" +
+        "| Header 1 | Header 2 |\n" +
+        "|---|---|\n" +
+        "| Cell A | Cell B |";
+      
+      const htmlOutput = parseMarkdown(mdInput);
+      
+      assert.ok(htmlOutput.includes("<h1>Main Title</h1>"));
+      assert.ok(htmlOutput.includes("<strong>bold</strong>"));
+      assert.ok(htmlOutput.includes("<em>italic</em>"));
+      assert.ok(htmlOutput.includes("<ul>"));
+      assert.ok(htmlOutput.includes("<li>Item 1</li>"));
+      assert.ok(htmlOutput.includes("<table>"));
+      assert.ok(htmlOutput.includes("<th>Header 1</th>"));
+      assert.ok(htmlOutput.includes("<td>Cell A</td>"));
     }),
   ];
 

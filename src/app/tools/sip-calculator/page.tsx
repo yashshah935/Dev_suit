@@ -17,6 +17,7 @@ export default function SipCalculator() {
   const [years, setYears] = useState<number>(10);
   const [inflation, setInflation] = useState<number>(6);
   const [currency, setCurrency] = useState("INR");
+  const [openFaq, setOpenFaq] = useState<number | null>(null);
   
   const [summary, setSummary] = useState({
     investedAmount: 0,
@@ -114,15 +115,82 @@ export default function SipCalculator() {
     }).format(val);
   };
 
+  // SEO Data
+  const faqs = [
+    {
+      q: "What is a Systematic Investment Plan (SIP)?",
+      a: "A Systematic Investment Plan (SIP) is an investment vehicle offered by mutual funds, where an investor makes regular, equal payments (monthly, quarterly) rather than a one-time lump-sum deposit."
+    },
+    {
+      q: "Why is expected inflation rate included in the calculator?",
+      a: "Inflation reduces the purchasing power of money over time. While your nominal portfolio value will grow to the Future Value, the 'Real Future Value' tells you what that money is actually worth in today's purchasing power terms."
+    },
+    {
+      q: "What formula is used to calculate inflation-adjusted SIP returns?",
+      a: "The calculator uses the Fisher Equation to determine the real rate of return: r_real = ((1 + r_nominal) / (1 + inflation) - 1). This monthly real rate is then used in the standard SIP compound formula."
+    }
+  ];
+
+  const useCases = [
+    {
+      title: "Long-Term Retirement Goal Forecasting",
+      desc: "Model how saving a specific portion of your income each month will compound over 20–30 years, adjusting for expected inflation to ensure your target nest egg is sufficient."
+    },
+    {
+      title: "Wealth-Gained Visual Modeling",
+      desc: "Use the sliders to experiment with minor interest rate adjustments (e.g. 12% to 15%) to see the massive compounding impact on your estimated wealth gained."
+    }
+  ];
+
+  // Schema Markup
+  const webAppSchema = {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "SIP Calculator with Inflation | DevSuite",
+    "url": "https://dev-suit.vercel.app/tools/sip-calculator",
+    "applicationCategory": "DeveloperApplication",
+    "operatingSystem": "All",
+    "browserRequirements": "Requires JavaScript. Requires HTML5.",
+    "offers": {
+      "@type": "Offer",
+      "price": "0.00",
+      "priceCurrency": "USD"
+    },
+    "description": "Calculate Systematic Investment Plan (SIP) compounding interest returns, with custom inflation rate inputs and multi-currency formatting."
+  };
+
+  const faqSchema = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": faqs.map(faq => ({
+      "@type": "Question",
+      "name": faq.q,
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": faq.a
+      }
+    }))
+  };
+
   return (
     <div className="workspace">
+      {/* Schema Scripts */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(webAppSchema) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
+      />
+
       <div className="workspace-header">
         <div className="workspace-title-area">
           <h1 className="workspace-title">
-            <span>📈</span> SIP Calculator (Inflation-Adjusted)
+            <span>📈</span> SIP Calculator
           </h1>
           <p className="workspace-desc">
-            Calculate your Systemic Investment Plan growth and see what your returns will be worth in today's money.
+            Calculate Systematic Investment Plan compounding returns. Model growth adjusted for inflation to predict actual future buying power.
           </p>
         </div>
         <Link href="/" className="btn-back">
@@ -130,7 +198,7 @@ export default function SipCalculator() {
         </Link>
       </div>
 
-      {/* Control Bar (Now at the top) */}
+      {/* Control Bar */}
       <div className="control-bar">
         <div className="control-options">
           <div className="option-group">
@@ -292,7 +360,7 @@ export default function SipCalculator() {
       </div>
 
       {/* Year-by-Year Breakdown Table */}
-      <div className="pane" style={{ marginTop: "1rem" }}>
+      <div className="pane" style={{ marginTop: "1.5rem" }}>
         <h2 className="pane-title" style={{ marginBottom: "1rem" }}>Year-by-Year Growth Timeline</h2>
         <div style={{ overflowX: "auto" }}>
           <table style={{ width: "100%", borderCollapse: "collapse", textAlign: "left", fontSize: "0.9rem" }}>
@@ -319,6 +387,74 @@ export default function SipCalculator() {
           </table>
         </div>
       </div>
+
+      {/* SEO Section */}
+      <section className="seo-section">
+        <div>
+          <h2 className="seo-title">About SIP Calculators & Inflation Math</h2>
+          <p className="seo-subtitle">Why estimating future portfolio purchasing power is essential for wealth building.</p>
+        </div>
+
+        <div className="seo-grid">
+          <div>
+            <h3 style={{ fontSize: "1.3rem", fontWeight: 600, color: "var(--text-primary)", marginBottom: "1rem" }}>
+              Practical Use Cases
+            </h3>
+            <div className="use-cases-list">
+              {useCases.map((uc, idx) => (
+                <div key={idx} className="use-case-card">
+                  <div className="use-case-title">
+                    <span>📈</span> {uc.title}
+                  </div>
+                  <p className="use-case-desc">{uc.desc}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <div>
+            <h3 style={{ fontSize: "1.3rem", fontWeight: 600, color: "var(--text-primary)", marginBottom: "1rem" }}>
+              Frequently Asked Questions
+            </h3>
+            <div className="faq-list">
+              {faqs.map((faq, idx) => (
+                <div key={idx} className="faq-item">
+                  <button
+                    className="faq-question"
+                    onClick={() => setOpenFaq(openFaq === idx ? null : idx)}
+                  >
+                    <span>{faq.q}</span>
+                    <span style={{ fontSize: "0.8rem", opacity: 0.7 }}>
+                      {openFaq === idx ? "▲" : "▼"}
+                    </span>
+                  </button>
+                  {openFaq === idx && <div className="faq-answer">{faq.a}</div>}
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <h3 style={{ fontSize: "1.3rem", fontWeight: 600, color: "var(--text-primary)", marginBottom: "1rem" }}>
+            Related Developer Tools & Guides
+          </h3>
+          <div className="related-links-grid">
+            <Link href="/tools/json-formatter" className="related-link-card">
+              <span>JSON Formatter & Validator</span>
+              <span>&rarr;</span>
+            </Link>
+            <Link href="/tools/base64-encoder" className="related-link-card">
+              <span>Base64 Encoder Tool</span>
+              <span>&rarr;</span>
+            </Link>
+            <Link href="/compare/json-vs-xml" className="related-link-card">
+              <span>JSON vs XML Comparison</span>
+              <span>&rarr;</span>
+            </Link>
+          </div>
+        </div>
+      </section>
     </div>
   );
 }

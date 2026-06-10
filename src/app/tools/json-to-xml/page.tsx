@@ -2,6 +2,7 @@
 
 import { useState, useRef } from "react";
 import Link from "next/link";
+import { copyToClipboard } from "../../utils/clipboard";
 
 const SAMPLE_JSON = `{
   "store": {
@@ -46,6 +47,7 @@ export default function JsonToXml() {
   const [errorLine, setErrorLine] = useState<number | null>(null);
   const [success, setSuccess] = useState<boolean>(false);
   const [copyFeedback, setCopyFeedback] = useState<string | null>(null);
+  const [openFaq, setOpenFaq] = useState<number | null>(null);
 
   const inputRef = useRef<HTMLTextAreaElement>(null);
   const inputGutterRef = useRef<HTMLDivElement>(null);
@@ -126,10 +128,14 @@ export default function JsonToXml() {
 
   const handleCopy = (text: string, type: "input" | "output") => {
     if (!text) return;
-    navigator.clipboard.writeText(text).then(() => {
-      setCopyFeedback(type);
-      setTimeout(() => setCopyFeedback(null), 2000);
-    });
+    copyToClipboard(text)
+      .then(() => {
+        setCopyFeedback(type);
+        setTimeout(() => setCopyFeedback(null), 2000);
+      })
+      .catch((err) => {
+        console.error("Failed to copy JSON to XML text:", err);
+      });
   };
 
   const handleDownload = () => {
@@ -175,15 +181,82 @@ export default function JsonToXml() {
   const inputLines = input.split("\n");
   const outputLines = output.split("\n");
 
+  // SEO Data
+  const faqs = [
+    {
+      q: "How are JSON attributes represented in XML?",
+      a: "By standard convention, JSON keys prefixed with '@_' are converted into XML tag attributes rather than child nodes. For example, '{\"@_id\": 1}' is parsed into 'id=\"1\"'."
+    },
+    {
+      q: "How is text content formatted alongside attributes?",
+      a: "If an XML element has both attributes and text values, you can use the '#text' property key in your JSON input. The converter will bind it to the element's text node."
+    },
+    {
+      q: "Is client-side JSON verification performed before conversion?",
+      a: "Yes! The tool performs a local JSON.parse check on the browser side before making the backend call, immediately catching and highlighting any curly brace mismatches, missing commas, or wrong formats."
+    }
+  ];
+
+  const useCases = [
+    {
+      title: "Generating XML Feeds",
+      desc: "Convert JSON database exports directly into XML formats compatible with RSS feeds, Google Shopping listings, or sitemap specifications."
+    },
+    {
+      title: "Fintech Configuration Declarations",
+      desc: "Compile modern JSON configuration files into standard enterprise-format XML schemas required by legacy banking frameworks and soap envelopes."
+    }
+  ];
+
+  // Schema Markup
+  const webAppSchema = {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "JSON to XML Converter | DevSuite",
+    "url": "https://dev-suit.vercel.app/tools/json-to-xml",
+    "applicationCategory": "DeveloperApplication",
+    "operatingSystem": "All",
+    "browserRequirements": "Requires JavaScript. Requires HTML5.",
+    "offers": {
+      "@type": "Offer",
+      "price": "0.00",
+      "priceCurrency": "USD"
+    },
+    "description": "Convert JSON configurations into structured XML format instantly with support for node attributes, nesting, and formatting."
+  };
+
+  const faqSchema = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": faqs.map(faq => ({
+      "@type": "Question",
+      "name": faq.q,
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": faq.a
+      }
+    }))
+  };
+
   return (
     <div className="workspace">
+      {/* Schema Scripts */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(webAppSchema) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
+      />
+
       <div className="workspace-header">
         <div className="workspace-title-area">
           <h1 className="workspace-title">
             <span>📝</span> JSON to XML Converter
           </h1>
           <p className="workspace-desc">
-            Convert structured JSON schemas into clean, well-formed XML structures using our Node.js backend.
+            Transform structured JSON data into clean, well-formed XML declarations instantly using our high-performance Node.js backend.
           </p>
         </div>
         <Link href="/" className="btn-back">
@@ -191,7 +264,7 @@ export default function JsonToXml() {
         </Link>
       </div>
 
-      {/* Control Bar (Now at the top) */}
+      {/* Control Bar */}
       <div className="control-bar">
         <div className="control-options">
           <span className="option-label" style={{ color: "var(--neon-purple)" }}>
@@ -220,11 +293,7 @@ export default function JsonToXml() {
               >
                 Load Sample
               </button>
-              <button
-                className="btn-icon"
-                onClick={handleClear}
-                title="Clear input"
-              >
+              <button className="btn-icon" onClick={handleClear} title="Clear input">
                 🗑️
               </button>
               <button
@@ -339,6 +408,82 @@ export default function JsonToXml() {
           </div>
         </div>
       )}
+
+      {/* SEO Section */}
+      <section className="seo-section">
+        <div>
+          <h2 className="seo-title">About JSON to XML Conversion</h2>
+          <p className="seo-subtitle">Why structures from JavaScript formats are translated to standard tags.</p>
+        </div>
+
+        <div className="seo-grid">
+          <div>
+            <h3 style={{ fontSize: "1.3rem", fontWeight: 600, color: "var(--text-primary)", marginBottom: "1rem" }}>
+              Practical Use Cases
+            </h3>
+            <div className="use-cases-list">
+              {useCases.map((uc, idx) => (
+                <div key={idx} className="use-case-card">
+                  <div className="use-case-title">
+                    <span>📝</span> {uc.title}
+                  </div>
+                  <p className="use-case-desc">{uc.desc}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <div>
+            <h3 style={{ fontSize: "1.3rem", fontWeight: 600, color: "var(--text-primary)", marginBottom: "1rem" }}>
+              Frequently Asked Questions
+            </h3>
+            <div className="faq-list">
+              {faqs.map((faq, idx) => (
+                <div key={idx} className="faq-item">
+                  <button
+                    className="faq-question"
+                    onClick={() => setOpenFaq(openFaq === idx ? null : idx)}
+                  >
+                    <span>{faq.q}</span>
+                    <span style={{ fontSize: "0.8rem", opacity: 0.7 }}>
+                      {openFaq === idx ? "▲" : "▼"}
+                    </span>
+                  </button>
+                  {openFaq === idx && <div className="faq-answer">{faq.a}</div>}
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <h3 style={{ fontSize: "1.3rem", fontWeight: 600, color: "var(--text-primary)", marginBottom: "1rem" }}>
+            Related Developer Tools & Guides
+          </h3>
+          <div className="related-links-grid">
+            <Link href="/tools/xml-to-json" className="related-link-card">
+              <span>XML to JSON Converter</span>
+              <span>&rarr;</span>
+            </Link>
+            <Link href="/tools/json-formatter" className="related-link-card">
+              <span>JSON Formatter & Validator</span>
+              <span>&rarr;</span>
+            </Link>
+            <Link href="/compare/json-vs-xml" className="related-link-card">
+              <span>JSON vs XML Comparison</span>
+              <span>&rarr;</span>
+            </Link>
+            <Link href="/guides/json-formatting" className="related-link-card">
+              <span>JSON Formatting Guide</span>
+              <span>&rarr;</span>
+            </Link>
+            <Link href="/errors/json-parse-unexpected-token" className="related-link-card" style={{ borderLeft: "3px solid var(--neon-pink)" }}>
+              <span>Fix Unexpected Token Error</span>
+              <span>🔧</span>
+            </Link>
+          </div>
+        </div>
+      </section>
     </div>
   );
 }

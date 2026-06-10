@@ -2,6 +2,7 @@
 
 import { useState, useRef } from "react";
 import Link from "next/link";
+import { copyToClipboard } from "../../utils/clipboard";
 
 const SAMPLE_JSON = `{
   "projectName": "DevSuite",
@@ -33,6 +34,7 @@ export default function JsonFormatter() {
   const [errorLine, setErrorLine] = useState<number | null>(null);
   const [success, setSuccess] = useState<boolean>(false);
   const [copyFeedback, setCopyFeedback] = useState<string | null>(null);
+  const [openFaq, setOpenFaq] = useState<number | null>(null);
 
   const inputRef = useRef<HTMLTextAreaElement>(null);
   const inputGutterRef = useRef<HTMLDivElement>(null);
@@ -116,10 +118,14 @@ export default function JsonFormatter() {
 
   const handleCopy = (text: string, type: "input" | "output") => {
     if (!text) return;
-    navigator.clipboard.writeText(text).then(() => {
-      setCopyFeedback(type);
-      setTimeout(() => setCopyFeedback(null), 2000);
-    });
+    copyToClipboard(text)
+      .then(() => {
+        setCopyFeedback(type);
+        setTimeout(() => setCopyFeedback(null), 2000);
+      })
+      .catch((err) => {
+        console.error("Failed to copy JSON text:", err);
+      });
   };
 
   const handleDownload = () => {
@@ -165,15 +171,82 @@ export default function JsonFormatter() {
   const inputLines = input.split("\n");
   const outputLines = output.split("\n");
 
+  // SEO Data
+  const faqs = [
+    {
+      q: "What is a JSON Formatter?",
+      a: "A JSON Formatter is an online utility designed to parse raw, unindented, or minified JSON text and output it with clean styling, indentation, and spacing, making it readable for software developers."
+    },
+    {
+      q: "How does the line-highlighting error validator work?",
+      a: "When you paste invalid JSON syntax, our formatter catches the parse exception, converts the error position index into a line number, and automatically marks the erroneous line in red in the line-number gutter."
+    },
+    {
+      q: "Is my JSON data secure on DevSuite?",
+      a: "Yes! DevSuite processes JSON formatting and validation 100% on the client side in your web browser. No JSON inputs are sent to any external servers, ensuring your configuration files remain confidential."
+    }
+  ];
+
+  const useCases = [
+    {
+      title: "Debugging API Payload Anomalies",
+      desc: "Paste unformatted network response payloads from developer consoles to immediately spot structural syntax errors, duplicate keys, or malformed data types."
+    },
+    {
+      title: "Config File Optimization",
+      desc: "Beautify complex configuration files (like package.json or tsconfig.json) during code reviews, or minify them to decrease static deployment sizes."
+    }
+  ];
+
+  // Schema Markup
+  const webAppSchema = {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "JSON Formatter & Validator | DevSuite",
+    "url": "https://dev-suit.vercel.app/tools/json-formatter",
+    "applicationCategory": "DeveloperApplication",
+    "operatingSystem": "All",
+    "browserRequirements": "Requires JavaScript. Requires HTML5.",
+    "offers": {
+      "@type": "Offer",
+      "price": "0.00",
+      "priceCurrency": "USD"
+    },
+    "description": "Beautify, format, validate, and minify JSON data instantly. Features live line-gutter error validation indicators."
+  };
+
+  const faqSchema = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": faqs.map(faq => ({
+      "@type": "Question",
+      "name": faq.q,
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": faq.a
+      }
+    }))
+  };
+
   return (
     <div className="workspace">
+      {/* Schema Scripts */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(webAppSchema) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
+      />
+
       <div className="workspace-header">
         <div className="workspace-title-area">
           <h1 className="workspace-title">
             <span>🗂️</span> JSON Formatter & Validator
           </h1>
           <p className="workspace-desc">
-            Clean, format, beautify, and validate JSON data. Find syntax errors quickly.
+            Clean, format, beautify, and validate JSON data. Find syntax errors quickly with line-highlighting debugging tools.
           </p>
         </div>
         <Link href="/" className="btn-back">
@@ -181,7 +254,7 @@ export default function JsonFormatter() {
         </Link>
       </div>
 
-      {/* Control Bar (Now at the top) */}
+      {/* Control Bar */}
       <div className="control-bar">
         <div className="control-options">
           <div className="option-group">
@@ -221,11 +294,7 @@ export default function JsonFormatter() {
               >
                 Load Sample
               </button>
-              <button
-                className="btn-icon"
-                onClick={handleClear}
-                title="Clear input"
-              >
+              <button className="btn-icon" onClick={handleClear} title="Clear input">
                 🗑️
               </button>
               <button
@@ -340,6 +409,82 @@ export default function JsonFormatter() {
           </div>
         </div>
       )}
+
+      {/* SEO Section */}
+      <section className="seo-section">
+        <div>
+          <h2 className="seo-title">About JSON Formatting & Validation</h2>
+          <p className="seo-subtitle">Why clean JSON data is crucial for API performance and error resolution.</p>
+        </div>
+
+        <div className="seo-grid">
+          <div>
+            <h3 style={{ fontSize: "1.3rem", fontWeight: 600, color: "var(--text-primary)", marginBottom: "1rem" }}>
+              Practical Use Cases
+            </h3>
+            <div className="use-cases-list">
+              {useCases.map((uc, idx) => (
+                <div key={idx} className="use-case-card">
+                  <div className="use-case-title">
+                    <span>⚡</span> {uc.title}
+                  </div>
+                  <p className="use-case-desc">{uc.desc}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <div>
+            <h3 style={{ fontSize: "1.3rem", fontWeight: 600, color: "var(--text-primary)", marginBottom: "1rem" }}>
+              Frequently Asked Questions
+            </h3>
+            <div className="faq-list">
+              {faqs.map((faq, idx) => (
+                <div key={idx} className="faq-item">
+                  <button
+                    className="faq-question"
+                    onClick={() => setOpenFaq(openFaq === idx ? null : idx)}
+                  >
+                    <span>{faq.q}</span>
+                    <span style={{ fontSize: "0.8rem", opacity: 0.7 }}>
+                      {openFaq === idx ? "▲" : "▼"}
+                    </span>
+                  </button>
+                  {openFaq === idx && <div className="faq-answer">{faq.a}</div>}
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <h3 style={{ fontSize: "1.3rem", fontWeight: 600, color: "var(--text-primary)", marginBottom: "1rem" }}>
+            Related Developer Tools & Guides
+          </h3>
+          <div className="related-links-grid">
+            <Link href="/tools/xml-to-json" className="related-link-card">
+              <span>XML to JSON Converter</span>
+              <span>&rarr;</span>
+            </Link>
+            <Link href="/tools/json-to-xml" className="related-link-card">
+              <span>JSON to XML Converter</span>
+              <span>&rarr;</span>
+            </Link>
+            <Link href="/compare/json-vs-xml" className="related-link-card">
+              <span>JSON vs XML Comparison</span>
+              <span>&rarr;</span>
+            </Link>
+            <Link href="/guides/json-formatting" className="related-link-card">
+              <span>JSON Formatting Guide</span>
+              <span>&rarr;</span>
+            </Link>
+            <Link href="/errors/json-parse-unexpected-token" className="related-link-card" style={{ borderLeft: "3px solid var(--neon-pink)" }}>
+              <span>Fix Unexpected Token Error</span>
+              <span>🔧</span>
+            </Link>
+          </div>
+        </div>
+      </section>
     </div>
   );
 }
