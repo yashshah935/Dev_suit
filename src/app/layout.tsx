@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono, Outfit } from "next/font/google";
 import Link from "next/link";
+import { GoogleAnalytics } from "@next/third-parties/google";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -151,6 +152,7 @@ export default function RootLayout({
           </footer>
         </div>
       </body>
+      <GoogleAnalytics gaId="G-X2QDECQ10Z" />
     </html>
   );
 }
