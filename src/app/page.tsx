@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { TOOLS_REGISTRY } from "./utils/seoRegistry";
 
 interface ToolInfo {
   id: string;
@@ -7,35 +8,32 @@ interface ToolInfo {
   path: string;
   icon: string;
   badge?: string;
-  nodeBackend: boolean;
 }
 
-const TOOLS: ToolInfo[] = [
+// 11 Original Static Tools
+const STATIC_TOOLS: ToolInfo[] = [
   {
     id: "json-formatter",
     name: "JSON Formatter & Validator",
     description: "Format, beautify, minify, and validate JSON inputs with detailed syntax error highlighting.",
     path: "/tools/json-formatter",
     icon: "🗂️",
-    nodeBackend: false,
   },
   {
     id: "xml-to-json",
     name: "XML to JSON Converter",
-    description: "Convert XML data structures into parsed JSON format with deep hierarchy representation using Node.js.",
+    description: "Convert XML data structures into parsed JSON format with deep hierarchy representation.",
     path: "/tools/xml-to-json",
     icon: "🔌",
     badge: "Node Backend",
-    nodeBackend: true,
   },
   {
     id: "json-to-xml",
     name: "JSON to XML Converter",
-    description: "Convert structured JSON data into cleanly formatted XML declarations using Node.js.",
+    description: "Convert structured JSON data into cleanly formatted XML declarations.",
     path: "/tools/json-to-xml",
     icon: "📝",
     badge: "Node Backend",
-    nodeBackend: true,
   },
   {
     id: "base64-encoder",
@@ -43,7 +41,6 @@ const TOOLS: ToolInfo[] = [
     description: "Encode raw plain text strings into standard Base64 representation instantly.",
     path: "/tools/base64-encoder",
     icon: "🔐",
-    nodeBackend: false,
   },
   {
     id: "base64-decoder",
@@ -51,7 +48,6 @@ const TOOLS: ToolInfo[] = [
     description: "Decode Base64 string representations back to human-readable plain text instantly.",
     path: "/tools/base64-decoder",
     icon: "🔐",
-    nodeBackend: false,
   },
   {
     id: "url-encoder",
@@ -59,7 +55,6 @@ const TOOLS: ToolInfo[] = [
     description: "Convert special characters inside URLs to percentage percent-encoded representations.",
     path: "/tools/url-encoder",
     icon: "🔗",
-    nodeBackend: false,
   },
   {
     id: "url-decoder",
@@ -67,7 +62,6 @@ const TOOLS: ToolInfo[] = [
     description: "Convert percentage percent-escaped URLs back to standard text formats.",
     path: "/tools/url-decoder",
     icon: "🔗",
-    nodeBackend: false,
   },
   {
     id: "sip-calculator",
@@ -75,7 +69,6 @@ const TOOLS: ToolInfo[] = [
     description: "Calculate compound interest returns for Systemic Investment Plans adjusted for annual inflation.",
     path: "/tools/sip-calculator",
     icon: "📈",
-    nodeBackend: false,
   },
   {
     id: "speech-to-text",
@@ -83,7 +76,6 @@ const TOOLS: ToolInfo[] = [
     description: "Transcribe spoken audio from your microphone to written text in real-time.",
     path: "/tools/speech-to-text",
     icon: "🗣️",
-    nodeBackend: false,
   },
   {
     id: "text-to-speech",
@@ -91,7 +83,6 @@ const TOOLS: ToolInfo[] = [
     description: "Synthesize typed paragraphs into spoken audio narration using custom system voices.",
     path: "/tools/text-to-speech",
     icon: "🗣️",
-    nodeBackend: false,
   },
   {
     id: "markdown-parser",
@@ -99,7 +90,50 @@ const TOOLS: ToolInfo[] = [
     description: "Convert and compile Markdown syntax to clean semantic HTML with visual live rendering and PDF downloads.",
     path: "/tools/markdown-parser",
     icon: "📝",
-    nodeBackend: false,
+  },
+];
+
+// Map 20 proposed new tools from TOOLS_REGISTRY
+const DYNAMIC_TOOLS: ToolInfo[] = Object.keys(TOOLS_REGISTRY).map((slug) => {
+  const tool = TOOLS_REGISTRY[slug];
+  return {
+    id: slug,
+    name: tool.title,
+    description: tool.description,
+    path: `/tools/${slug}`,
+    icon: tool.icon,
+  };
+});
+
+// All 31 Tools Combined
+const ALL_TOOLS = [...STATIC_TOOLS, ...DYNAMIC_TOOLS];
+
+// Category structure
+const CATEGORIES = [
+  {
+    title: "JSON & Text Formatters",
+    icon: "🗂️",
+    toolIds: ["json-formatter", "json-beautifier", "json-minifier", "json-validator", "diff-checker", "markdown-parser"],
+  },
+  {
+    title: "Data Converters",
+    icon: "🔄",
+    toolIds: ["xml-to-json", "json-to-xml", "yaml-to-json", "json-to-csv", "csv-to-json"],
+  },
+  {
+    title: "XML & YAML Editors",
+    icon: "📋",
+    toolIds: ["xml-formatter", "xml-beautifier", "xml-validator", "yaml-validator"],
+  },
+  {
+    title: "Security & Encoding",
+    icon: "🔐",
+    toolIds: ["base64-encoder", "base64-decoder", "jwt-decoder", "hash-generator", "uuid-generator", "html-encoder", "html-decoder", "url-encoder", "url-decoder"],
+  },
+  {
+    title: "Media & Calculations",
+    icon: "📈",
+    toolIds: ["sip-calculator", "speech-to-text", "text-to-speech", "qr-generator", "cron-expression"],
   },
 ];
 
@@ -113,45 +147,63 @@ export default function Dashboard() {
         </p>
       </section>
 
-      {/* Main Grid: 10 Relocated Tools */}
-      <h2 style={{ fontSize: "1.5rem", fontWeight: 700, marginBottom: "1.5rem", color: "var(--text-primary)", fontFamily: "var(--font-outfit)" }}>
-        Available Developer Utilities
-      </h2>
-      <div className="grid-tools" style={{ marginBottom: "4rem" }}>
-        {TOOLS.map((tool) => (
-          <Link href={tool.path} key={tool.id} className="tool-card">
-            <div className="tool-icon-wrapper">{tool.icon}</div>
-            <h2 className="tool-card-title">{tool.name}</h2>
-            <p className="tool-card-desc">{tool.description}</p>
-            
-            <div className="tool-card-action">
-              <span>Open Tool</span>
-              <span>&rarr;</span>
-            </div>
-            
-            {tool.badge && (
-              <span
-                style={{
-                  position: "absolute",
-                  top: "1rem",
-                  right: "1rem",
-                  background: "rgba(0, 242, 254, 0.1)",
-                  border: "1px solid rgba(0, 242, 254, 0.3)",
-                  color: "var(--neon-cyan)",
-                  fontSize: "0.75rem",
-                  padding: "0.25rem 0.5rem",
-                  borderRadius: "20px",
-                  fontWeight: 600,
-                }}
-              >
-                {tool.badge}
-              </span>
-            )}
-          </Link>
-        ))}
-      </div>
+      {/* Categorized Listings */}
+      {CATEGORIES.map((cat, idx) => {
+        const catTools = ALL_TOOLS.filter((t) => cat.toolIds.includes(t.id));
+        return (
+          <div key={idx} style={{ marginBottom: "3rem" }}>
+            <h2
+              style={{
+                fontSize: "1.4rem",
+                fontWeight: 700,
+                marginBottom: "1.25rem",
+                color: "var(--text-primary)",
+                fontFamily: "var(--font-outfit)",
+                display: "flex",
+                alignItems: "center",
+                gap: "0.5rem",
+              }}
+            >
+              <span>{cat.icon}</span> {cat.title}
+            </h2>
+            <div className="grid-tools">
+              {catTools.map((tool) => (
+                <Link href={tool.path} key={tool.id} className="tool-card">
+                  <div className="tool-icon-wrapper">{tool.icon}</div>
+                  <h3 className="tool-card-title" style={{ fontSize: "1.1rem", fontWeight: 600, margin: "0.5rem 0" }}>{tool.name}</h3>
+                  <p className="tool-card-desc">{tool.description}</p>
 
-      {/* SEO Discovery Section: Comparisons, Guides, and Errors */}
+                  <div className="tool-card-action">
+                    <span>Open Tool</span>
+                    <span>&rarr;</span>
+                  </div>
+
+                  {tool.badge && (
+                    <span
+                      style={{
+                        position: "absolute",
+                        top: "1rem",
+                        right: "1rem",
+                        background: "rgba(0, 242, 254, 0.1)",
+                        border: "1px solid rgba(0, 242, 254, 0.3)",
+                        color: "var(--neon-cyan)",
+                        fontSize: "0.75rem",
+                        padding: "0.25rem 0.5rem",
+                        borderRadius: "20px",
+                        fontWeight: 600,
+                      }}
+                    >
+                      {tool.badge}
+                    </span>
+                  )}
+                </Link>
+              ))}
+            </div>
+          </div>
+        );
+      })}
+
+      {/* SEO Discovery Columns */}
       <section className="seo-section" style={{ borderTop: "1px solid var(--border-color)", paddingTop: "3rem" }}>
         <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: "2rem" }}>
           
@@ -172,12 +224,16 @@ export default function Dashboard() {
                 <span>JSON vs YAML</span>
                 <span>&rarr;</span>
               </Link>
-              <Link href="/compare/mp3-vs-wav" className="related-link-card">
-                <span>MP3 vs WAV</span>
+              <Link href="/compare/json-formatter-vs-validator" className="related-link-card">
+                <span>JSON Formatter vs Validator</span>
                 <span>&rarr;</span>
               </Link>
-              <Link href="/compare/markdown-vs-html" className="related-link-card">
-                <span>Markdown vs HTML</span>
+              <Link href="/compare/yaml-vs-json" className="related-link-card">
+                <span>YAML vs JSON</span>
+                <span>&rarr;</span>
+              </Link>
+              <Link href="/compare/md5-vs-sha256" className="related-link-card">
+                <span>MD5 vs SHA-256 Hashing</span>
                 <span>&rarr;</span>
               </Link>
             </div>
@@ -200,12 +256,16 @@ export default function Dashboard() {
                 <span>XML Validation</span>
                 <span>&rarr;</span>
               </Link>
-              <Link href="/guides/base64-encoding" className="related-link-card">
-                <span>Base64 Encoding</span>
+              <Link href="/guides/yaml-validation-guide" className="related-link-card">
+                <span>YAML Validation Guide</span>
                 <span>&rarr;</span>
               </Link>
-              <Link href="/guides/markdown-syntax" className="related-link-card">
-                <span>Markdown Syntax</span>
+              <Link href="/guides/jwt-decoding-guide" className="related-link-card">
+                <span>JWT Decoding Guide</span>
+                <span>&rarr;</span>
+              </Link>
+              <Link href="/guides/uuid-version-4-generation" className="related-link-card">
+                <span>UUID v4 Generation</span>
                 <span>&rarr;</span>
               </Link>
             </div>
@@ -224,16 +284,20 @@ export default function Dashboard() {
                 <span>Unexpected JSON Token</span>
                 <span>🔧</span>
               </Link>
-              <Link href="/errors/invalid-xml-character" className="related-link-card">
-                <span>Invalid XML Character</span>
+              <Link href="/errors/yaml-syntax-error" className="related-link-card">
+                <span>Fix YAML Syntax Errors</span>
+                <span>🔧</span>
+              </Link>
+              <Link href="/errors/jwt-invalid-signature-or-token" className="related-link-card">
+                <span>Invalid JWT Signature</span>
+                <span>🔧</span>
+              </Link>
+              <Link href="/errors/color-converter-invalid-hex-code" className="related-link-card">
+                <span>Invalid HEX Color Code</span>
                 <span>🔧</span>
               </Link>
               <Link href="/errors/base64-invalid-input" className="related-link-card">
                 <span>Base64 Invalid Input</span>
-                <span>🔧</span>
-              </Link>
-              <Link href="/errors/markdown-rendering-issues" className="related-link-card">
-                <span>Markdown Rendering Errors</span>
                 <span>🔧</span>
               </Link>
             </div>

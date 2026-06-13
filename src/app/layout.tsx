@@ -45,49 +45,61 @@ export default function RootLayout({
               </Link>
               <div className="dropdown">
                 <span className="dropdown-trigger">
-                  Formatters & Converters <span style={{ fontSize: "0.75rem" }}>▼</span>
+                  Formatters <span style={{ fontSize: "0.75rem" }}>▼</span>
                 </span>
                 <div className="dropdown-menu">
-                  <Link href="/tools/json-formatter" className="dropdown-item">
-                    JSON Formatter
-                  </Link>
-                  <Link href="/tools/xml-to-json" className="dropdown-item">
-                    XML to JSON
-                  </Link>
-                  <Link href="/tools/json-to-xml" className="dropdown-item">
-                    JSON to XML
-                  </Link>
-                  <Link href="/tools/markdown-parser" className="dropdown-item">
-                    Markdown Parser
-                  </Link>
+                  <Link href="/tools/json-formatter" className="dropdown-item">JSON Formatter</Link>
+                  <Link href="/tools/json-beautifier" className="dropdown-item">JSON Beautifier</Link>
+                  <Link href="/tools/json-minifier" className="dropdown-item">JSON Minifier</Link>
+                  <Link href="/tools/json-validator" className="dropdown-item">JSON Validator</Link>
+                  <Link href="/tools/xml-formatter" className="dropdown-item">XML Formatter</Link>
+                  <Link href="/tools/xml-beautifier" className="dropdown-item">XML Beautifier</Link>
+                  <Link href="/tools/xml-validator" className="dropdown-item">XML Validator</Link>
+                  <Link href="/tools/markdown-parser" className="dropdown-item">Markdown Parser</Link>
+                  <Link href="/tools/diff-checker" className="dropdown-item" style={{ borderLeft: "3px solid var(--neon-cyan)" }}>Diff Checker</Link>
                 </div>
               </div>
               <div className="dropdown">
                 <span className="dropdown-trigger">
-                  Utility Tools <span style={{ fontSize: "0.75rem" }}>▼</span>
+                  Converters <span style={{ fontSize: "0.75rem" }}>▼</span>
                 </span>
                 <div className="dropdown-menu">
-                  <Link href="/tools/base64-encoder" className="dropdown-item">
-                    Base64 Encoder
-                  </Link>
-                  <Link href="/tools/base64-decoder" className="dropdown-item">
-                    Base64 Decoder
-                  </Link>
-                  <Link href="/tools/url-encoder" className="dropdown-item">
-                    URL Encoder
-                  </Link>
-                  <Link href="/tools/url-decoder" className="dropdown-item">
-                    URL Decoder
-                  </Link>
-                  <Link href="/tools/speech-to-text" className="dropdown-item">
-                    Speech to Text
-                  </Link>
-                  <Link href="/tools/text-to-speech" className="dropdown-item">
-                    Text to Speech
-                  </Link>
-                  <Link href="/tools/sip-calculator" className="dropdown-item">
-                    SIP Calculator
-                  </Link>
+                  <Link href="/tools/xml-to-json" className="dropdown-item">XML to JSON</Link>
+                  <Link href="/tools/json-to-xml" className="dropdown-item">JSON to XML</Link>
+                  <Link href="/tools/yaml-to-json" className="dropdown-item">YAML to JSON</Link>
+                  <Link href="/tools/json-to-csv" className="dropdown-item">JSON to CSV</Link>
+                  <Link href="/tools/csv-to-json" className="dropdown-item">CSV to JSON</Link>
+                </div>
+              </div>
+              <div className="dropdown">
+                <span className="dropdown-trigger">
+                  Security & Hashing <span style={{ fontSize: "0.75rem" }}>▼</span>
+                </span>
+                <div className="dropdown-menu">
+                  <Link href="/tools/base64-encoder" className="dropdown-item">Base64 Encoder</Link>
+                  <Link href="/tools/base64-decoder" className="dropdown-item">Base64 Decoder</Link>
+                  <Link href="/tools/url-encoder" className="dropdown-item">URL Encoder</Link>
+                  <Link href="/tools/url-decoder" className="dropdown-item">URL Decoder</Link>
+                  <Link href="/tools/html-encoder" className="dropdown-item">HTML Encoder</Link>
+                  <Link href="/tools/html-decoder" className="dropdown-item">HTML Decoder</Link>
+                  <Link href="/tools/jwt-decoder" className="dropdown-item" style={{ borderLeft: "3px solid var(--neon-cyan)" }}>JWT Decoder</Link>
+                  <Link href="/tools/hash-generator" className="dropdown-item">Hash Generator</Link>
+                  <Link href="/tools/uuid-generator" className="dropdown-item">UUID Generator</Link>
+                </div>
+              </div>
+              <div className="dropdown">
+                <span className="dropdown-trigger">
+                  Media & Utils <span style={{ fontSize: "0.75rem" }}>▼</span>
+                </span>
+                <div className="dropdown-menu">
+                  <Link href="/tools/speech-to-text" className="dropdown-item">Speech to Text</Link>
+                  <Link href="/tools/text-to-speech" className="dropdown-item">Text to Speech</Link>
+                  <Link href="/tools/qr-generator" className="dropdown-item">QR Generator</Link>
+                  <Link href="/tools/color-converter" className="dropdown-item">Color Converter</Link>
+                  <Link href="/tools/timestamp-converter" className="dropdown-item">Timestamp Converter</Link>
+                  <Link href="/tools/regex-tester" className="dropdown-item">Regex Tester</Link>
+                  <Link href="/tools/sip-calculator" className="dropdown-item">SIP Calculator</Link>
+                  <Link href="/tools/cron-expression" className="dropdown-item" style={{ borderLeft: "3px solid var(--neon-cyan)" }}>Cron Expression</Link>
                 </div>
               </div>
               <div className="dropdown">
@@ -95,49 +107,36 @@ export default function RootLayout({
                   Comparisons <span style={{ fontSize: "0.75rem" }}>▼</span>
                 </span>
                 <div className="dropdown-menu">
-                  <Link href="/compare/json-vs-xml" className="dropdown-item">
-                    JSON vs XML
-                  </Link>
-                  <Link href="/compare/json-vs-yaml" className="dropdown-item">
-                    JSON vs YAML
-                  </Link>
-                  <Link href="/compare/mp3-vs-wav" className="dropdown-item">
-                    MP3 vs WAV
-                  </Link>
-                  <Link href="/compare/markdown-vs-html" className="dropdown-item">
-                    Markdown vs HTML
-                  </Link>
+                  <Link href="/compare/json-vs-xml" className="dropdown-item">JSON vs XML</Link>
+                  <Link href="/compare/json-vs-yaml" className="dropdown-item">JSON vs YAML</Link>
+                  <Link href="/compare/markdown-vs-html" className="dropdown-item">Markdown vs HTML</Link>
+                  <Link href="/compare/json-formatter-vs-validator" className="dropdown-item">Formatter vs Validator</Link>
+                  <Link href="/compare/yaml-vs-json" className="dropdown-item">YAML vs JSON</Link>
+                  <Link href="/compare/md5-vs-sha256" className="dropdown-item">MD5 vs SHA-256</Link>
+                  <Link href="/compare/mp3-vs-wav" className="dropdown-item">MP3 vs WAV</Link>
+                  <Link href="/compare/cron-vs-systemd-timer" className="dropdown-item">Cron vs Systemd</Link>
                 </div>
               </div>
               <div className="dropdown">
                 <span className="dropdown-trigger">
                   Resources <span style={{ fontSize: "0.75rem" }}>▼</span>
                 </span>
-                <div className="dropdown-menu">
-                  <Link href="/guides/json-formatting" className="dropdown-item">
-                    JSON Formatting Guide
-                  </Link>
-                  <Link href="/guides/xml-validation" className="dropdown-item">
-                    XML Validation Guide
-                  </Link>
-                  <Link href="/guides/base64-encoding" className="dropdown-item">
-                    Base64 Encoding Guide
-                  </Link>
-                  <Link href="/guides/markdown-syntax" className="dropdown-item">
-                    Markdown Syntax Guide
-                  </Link>
-                  <Link href="/errors/json-parse-unexpected-token" className="dropdown-item" style={{ borderLeft: "3px solid var(--neon-pink)" }}>
-                    JSON Parse Error Fix
-                  </Link>
-                  <Link href="/errors/invalid-xml-character" className="dropdown-item" style={{ borderLeft: "3px solid var(--neon-pink)" }}>
-                    XML Char Error Fix
-                  </Link>
-                  <Link href="/errors/base64-invalid-input" className="dropdown-item" style={{ borderLeft: "3px solid var(--neon-pink)" }}>
-                    Base64 Input Error Fix
-                  </Link>
-                  <Link href="/errors/markdown-rendering-issues" className="dropdown-item" style={{ borderLeft: "3px solid var(--neon-pink)" }}>
-                    Markdown Render Fix
-                  </Link>
+                <div className="dropdown-menu" style={{ minWidth: "240px" }}>
+                  <Link href="/guides/json-formatting" className="dropdown-item">JSON Formatting Guide</Link>
+                  <Link href="/guides/xml-validation" className="dropdown-item">XML Validation Guide</Link>
+                  <Link href="/guides/yaml-validation-guide" className="dropdown-item">YAML Validation Guide</Link>
+                  <Link href="/guides/jwt-decoding-guide" className="dropdown-item">JWT Decoding Guide</Link>
+                  <Link href="/guides/base64-encoding" className="dropdown-item">Base64 Encoding Guide</Link>
+                  <Link href="/guides/markdown-syntax" className="dropdown-item">Markdown Syntax Guide</Link>
+                  <Link href="/guides/cron-expression-guide" className="dropdown-item">Cron Expression Guide</Link>
+                  <div style={{ borderTop: "1px solid var(--border-color)", margin: "0.4rem 0" }} />
+                  <Link href="/errors/json-parse-unexpected-token" className="dropdown-item" style={{ borderLeft: "3px solid var(--neon-pink)" }}>JSON Parse Error Fix</Link>
+                  <Link href="/errors/yaml-syntax-error" className="dropdown-item" style={{ borderLeft: "3px solid var(--neon-pink)" }}>YAML Syntax Error Fix</Link>
+                  <Link href="/errors/jwt-invalid-signature-or-token" className="dropdown-item" style={{ borderLeft: "3px solid var(--neon-pink)" }}>JWT Invalid Sig Fix</Link>
+                  <Link href="/errors/invalid-xml-character" className="dropdown-item" style={{ borderLeft: "3px solid var(--neon-pink)" }}>XML Char Error Fix</Link>
+                  <Link href="/errors/base64-invalid-input" className="dropdown-item" style={{ borderLeft: "3px solid var(--neon-pink)" }}>Base64 Input Error Fix</Link>
+                  <Link href="/errors/markdown-rendering-issues" className="dropdown-item" style={{ borderLeft: "3px solid var(--neon-pink)" }}>Markdown Render Fix</Link>
+                  <Link href="/errors/cron-expression-invalid-syntax" className="dropdown-item" style={{ borderLeft: "3px solid var(--neon-pink)" }}>Cron Syntax Error Fix</Link>
                 </div>
               </div>
             </nav>

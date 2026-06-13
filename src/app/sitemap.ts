@@ -1,9 +1,10 @@
 import { MetadataRoute } from "next";
+import { TOOLS_REGISTRY, GUIDES_REGISTRY, ERRORS_REGISTRY, COMPARE_REGISTRY } from "./utils/seoRegistry";
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const baseUrl = "https://dev-suit.vercel.app";
 
-  const routes = [
+  const staticRoutes = [
     "",
     "/compare/json-vs-xml",
     "/compare/json-vs-yaml",
@@ -30,7 +31,24 @@ export default function sitemap(): MetadataRoute.Sitemap {
     "/tools/xml-to-json",
   ];
 
-  return routes.map((route) => ({
+  const dynamicRoutes: string[] = [];
+
+  Object.keys(TOOLS_REGISTRY).forEach((slug) => {
+    dynamicRoutes.push(`/tools/${slug}`);
+  });
+  Object.keys(GUIDES_REGISTRY).forEach((slug) => {
+    dynamicRoutes.push(`/guides/${slug}`);
+  });
+  Object.keys(ERRORS_REGISTRY).forEach((slug) => {
+    dynamicRoutes.push(`/errors/${slug}`);
+  });
+  Object.keys(COMPARE_REGISTRY).forEach((slug) => {
+    dynamicRoutes.push(`/compare/${slug}`);
+  });
+
+  const allRoutes = [...staticRoutes, ...dynamicRoutes];
+
+  return allRoutes.map((route) => ({
     url: `${baseUrl}${route}`,
     lastModified: new Date(),
     changeFrequency: "weekly" as const,
