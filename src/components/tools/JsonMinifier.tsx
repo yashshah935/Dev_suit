@@ -135,7 +135,7 @@ export default function JsonMinifier() {
       )}
 
       {stats && (
-        <div className="pane" style={{ marginTop: "1.5rem", background: "rgba(16, 185, 129, 0.04)" }}>
+        <div className="pane" style={{ marginTop: "1.5rem", background: "var(--diff-added-bg)" }}>
           <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: "1rem", padding: "1rem", textAlign: "center" }}>
             <div>
               <div style={{ fontSize: "1.3rem", fontWeight: 700, color: "var(--text-primary)" }}>{stats.origSize} B</div>

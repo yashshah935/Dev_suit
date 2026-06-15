@@ -274,7 +274,7 @@ export default function CronExpression() {
             {nextRuns.length > 0 ? (
               <ul style={{ listStyle: "none", padding: 0, margin: 0, display: "flex", flexDirection: "column", gap: "0.5rem" }}>
                 {nextRuns.map((run, idx) => (
-                  <li key={idx} style={{ fontFamily: "var(--font-mono)", fontSize: "0.85rem", borderBottom: "1px solid rgba(255,255,255,0.02)", paddingBottom: "0.4rem", color: "var(--text-secondary)" }}>
+                  <li key={idx} style={{ fontFamily: "var(--font-mono)", fontSize: "0.85rem", borderBottom: "1px solid var(--border-color)", paddingBottom: "0.4rem", color: "var(--text-secondary)" }}>
                     <span style={{ color: "var(--neon-purple)", marginRight: "1rem" }}>▶ Run {idx + 1}:</span>
                     {run}
                   </li>

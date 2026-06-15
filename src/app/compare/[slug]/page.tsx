@@ -111,7 +111,7 @@ export default async function ComparePage({ params }: PageProps) {
         <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "2rem", marginBottom: "3rem" }}>
           
           {/* Tool A */}
-          <div className="pane" style={{ background: "rgba(8, 10, 16, 0.2)" }}>
+          <div className="pane">
             <h3 style={{ fontSize: "1.15rem", color: "var(--neon-cyan)", marginBottom: "1rem", fontWeight: 600 }}>{compareRef.toolA}</h3>
             
             <div style={{ marginBottom: "1.5rem" }}>
@@ -134,7 +134,7 @@ export default async function ComparePage({ params }: PageProps) {
           </div>
 
           {/* Tool B */}
-          <div className="pane" style={{ background: "rgba(8, 10, 16, 0.2)" }}>
+          <div className="pane">
             <h3 style={{ fontSize: "1.15rem", color: "var(--neon-purple)", marginBottom: "1rem", fontWeight: 600 }}>{compareRef.toolB}</h3>
             
             <div style={{ marginBottom: "1.5rem" }}>

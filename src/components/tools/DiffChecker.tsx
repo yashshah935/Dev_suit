@@ -209,7 +209,7 @@ export default function DiffChecker() {
             <div
               style={{
                 padding: "1rem",
-                background: "rgba(13, 17, 28, 0.4)",
+                background: "var(--bg-input)",
                 fontFamily: "var(--font-mono)",
                 fontSize: "0.85rem",
                 overflowX: "auto",
@@ -229,12 +229,12 @@ export default function DiffChecker() {
                 let prefix = " ";
 
                 if (isAdded) {
-                  bg = isSelected ? "rgba(16, 185, 129, 0.08)" : "rgba(255,255,255,0.01)";
-                  color = isSelected ? "#a7f3d0" : "var(--text-muted)";
+                  bg = isSelected ? "var(--diff-added-bg)" : "transparent";
+                  color = isSelected ? "var(--diff-added-color)" : "var(--text-muted)";
                   prefix = "+";
                 } else if (isRemoved) {
-                  bg = isSelected ? "rgba(239, 68, 68, 0.08)" : "transparent";
-                  color = isSelected ? "#fca5a5" : "var(--text-muted)";
+                  bg = isSelected ? "var(--diff-removed-bg)" : "transparent";
+                  color = isSelected ? "var(--diff-removed-color)" : "var(--text-muted)";
                   prefix = "-";
                 }
 

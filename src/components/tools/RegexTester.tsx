@@ -125,7 +125,7 @@ export default function RegexTester() {
 
           <div>
             <span className="option-label" style={{ display: "block", marginBottom: "0.5rem" }}>Flags:</span>
-            <div style={{ display: "flex", gap: "0.75rem", background: "rgba(255,255,255,0.03)", border: "1px solid var(--border-color)", padding: "0.45rem 1rem", borderRadius: "8px" }}>
+            <div style={{ display: "flex", gap: "0.75rem", background: "var(--bg-nav-hover)", border: "1px solid var(--border-color)", padding: "0.45rem 1rem", borderRadius: "8px" }}>
               {["g", "i", "m", "s", "u", "y"].map((f) => (
                 <label key={f} style={{ display: "flex", alignItems: "center", gap: "0.25rem", cursor: "pointer", fontSize: "0.9rem", color: flags.includes(f) ? "var(--neon-cyan)" : "var(--text-secondary)" }}>
                   <input
@@ -182,7 +182,7 @@ export default function RegexTester() {
           <div
             style={{
               height: "250px",
-              background: "rgba(13, 17, 28, 0.4)",
+              background: "var(--bg-input)",
               border: "1px solid var(--border-color)",
               borderRadius: "6px",
               padding: "1rem",
@@ -209,7 +209,7 @@ export default function RegexTester() {
               <div>Capture Groups</div>
             </div>
             {matches.map((m, idx) => (
-              <div key={idx} style={{ display: "grid", gridTemplateColumns: "80px 1fr 1fr", gap: "0.75rem", borderBottom: "1px solid rgba(255,255,255,0.03)", padding: "0.5rem 0", fontSize: "0.85rem", fontFamily: "var(--font-mono)" }}>
+              <div key={idx} style={{ display: "grid", gridTemplateColumns: "80px 1fr 1fr", gap: "0.75rem", borderBottom: "1px solid var(--border-color)", padding: "0.5rem 0", fontSize: "0.85rem", fontFamily: "var(--font-mono)" }}>
                 <div style={{ color: "var(--text-muted)" }}>{m.index}</div>
                 <div style={{ color: "var(--neon-cyan)" }}>{m.match}</div>
                 <div style={{ color: "var(--neon-purple)" }}>

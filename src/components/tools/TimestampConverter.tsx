@@ -144,7 +144,7 @@ export default function TimestampConverter() {
           )}
 
           {dateResults && (
-            <div style={{ display: "flex", flexDirection: "column", gap: "0.75rem", background: "rgba(255,255,255,0.02)", padding: "1rem", borderRadius: "6px", border: "1px solid var(--border-color)" }}>
+            <div style={{ display: "flex", flexDirection: "column", gap: "0.75rem", background: "var(--bg-nav-hover)", padding: "1rem", borderRadius: "6px", border: "1px solid var(--border-color)" }}>
               <div style={{ display: "flex", justifyContent: "space-between", fontSize: "0.9rem" }}>
                 <span style={{ fontWeight: 600, color: "var(--text-secondary)" }}>ISO 8601:</span>
                 <span style={{ fontFamily: "var(--font-mono)", color: "var(--neon-cyan)" }}>{dateResults.iso}</span>
@@ -209,7 +209,7 @@ export default function TimestampConverter() {
           )}
 
           {epochResult && (
-            <div style={{ display: "flex", flexDirection: "column", gap: "0.75rem", background: "rgba(255,255,255,0.02)", padding: "1rem", borderRadius: "6px", border: "1px solid var(--border-color)" }}>
+            <div style={{ display: "flex", flexDirection: "column", gap: "0.75rem", background: "var(--bg-nav-hover)", padding: "1rem", borderRadius: "6px", border: "1px solid var(--border-color)" }}>
               <div style={{ display: "flex", justifyContent: "space-between", fontSize: "0.9rem" }}>
                 <span style={{ fontWeight: 600, color: "var(--text-secondary)" }}>Seconds (s):</span>
                 <span style={{ fontFamily: "var(--font-mono)", color: "var(--neon-purple)", fontSize: "1.05rem" }}>{epochResult.s}</span>

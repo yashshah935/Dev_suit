@@ -102,7 +102,7 @@ export default function XmlValidator() {
           </div>
         </div>
 
-        <div className="pane" style={{ background: "rgba(13, 17, 28, 0.25)" }}>
+        <div className="pane">
           <div className="pane-header">
             <h2 className="pane-title">Schema Linter Results</h2>
           </div>

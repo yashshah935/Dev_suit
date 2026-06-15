@@ -1,5 +1,9 @@
+"use client";
+
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import { TOOLS_REGISTRY } from "./utils/seoRegistry";
+import TypingCarousel from "./components/TypingCarousel";
 
 interface ToolInfo {
   id: string;
@@ -93,7 +97,7 @@ const STATIC_TOOLS: ToolInfo[] = [
   },
 ];
 
-// Map 20 proposed new tools from TOOLS_REGISTRY
+// Map 21 proposed new tools from TOOLS_REGISTRY
 const DYNAMIC_TOOLS: ToolInfo[] = Object.keys(TOOLS_REGISTRY).map((slug) => {
   const tool = TOOLS_REGISTRY[slug];
   return {
@@ -105,39 +109,58 @@ const DYNAMIC_TOOLS: ToolInfo[] = Object.keys(TOOLS_REGISTRY).map((slug) => {
   };
 });
 
-// All 31 Tools Combined
+// All 32 Tools Combined
 const ALL_TOOLS = [...STATIC_TOOLS, ...DYNAMIC_TOOLS];
 
-// Category structure
-const CATEGORIES = [
-  {
-    title: "JSON & Text Formatters",
-    icon: "🗂️",
-    toolIds: ["json-formatter", "json-beautifier", "json-minifier", "json-validator", "diff-checker", "markdown-parser"],
-  },
-  {
-    title: "Data Converters",
-    icon: "🔄",
-    toolIds: ["xml-to-json", "json-to-xml", "yaml-to-json", "json-to-csv", "csv-to-json"],
-  },
-  {
-    title: "XML & YAML Editors",
-    icon: "📋",
-    toolIds: ["xml-formatter", "xml-beautifier", "xml-validator", "yaml-validator"],
-  },
-  {
-    title: "Security & Encoding",
-    icon: "🔐",
-    toolIds: ["base64-encoder", "base64-decoder", "jwt-decoder", "hash-generator", "uuid-generator", "html-encoder", "html-decoder", "url-encoder", "url-decoder"],
-  },
-  {
-    title: "Media & Calculations",
-    icon: "📈",
-    toolIds: ["sip-calculator", "speech-to-text", "text-to-speech", "qr-generator", "cron-expression"],
-  },
+// Tab category mapping
+const TABS = [
+  { id: "all", name: "All Tools", icon: "🛠️" },
+  { id: "formatters", name: "Formatters & Text", icon: "🗂️" },
+  { id: "converters", name: "Data Converters", icon: "🔄" },
+  { id: "editors", name: "XML & YAML Editors", icon: "📋" },
+  { id: "security", name: "Security & Hashing", icon: "🔐" },
+  { id: "media", name: "Media & Utils", icon: "📈" },
 ];
 
+const tabToCategoryMap: Record<string, string[]> = {
+  formatters: ["json-formatter", "json-beautifier", "json-minifier", "json-validator", "diff-checker", "markdown-parser", "regex-tester"],
+  converters: ["xml-to-json", "json-to-xml", "yaml-to-json", "json-to-csv", "csv-to-json"],
+  editors: ["xml-formatter", "xml-beautifier", "xml-validator", "yaml-validator"],
+  security: ["base64-encoder", "base64-decoder", "jwt-decoder", "hash-generator", "uuid-generator", "html-encoder", "html-decoder", "url-encoder", "url-decoder"],
+  media: ["sip-calculator", "speech-to-text", "text-to-speech", "qr-generator", "cron-expression", "timestamp-converter", "color-converter"],
+};
+
+const ITEMS_PER_PAGE = 12;
+
 export default function Dashboard() {
+  const [searchQuery, setSearchQuery] = useState("");
+  const [selectedCategory, setSelectedCategory] = useState("all");
+  const [currentPage, setCurrentPage] = useState(1);
+
+  // Reset page to 1 when search or category changes
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [searchQuery, selectedCategory]);
+
+  // Filter tools based on selected tab and search query
+  const filteredTools = ALL_TOOLS.filter((tool) => {
+    const matchesCategory =
+      selectedCategory === "all" ||
+      tabToCategoryMap[selectedCategory]?.includes(tool.id);
+    const matchesSearch =
+      tool.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      tool.description.toLowerCase().includes(searchQuery.toLowerCase());
+    return matchesCategory && matchesSearch;
+  });
+
+  // Paginate filtered tools
+  const totalItems = filteredTools.length;
+  const totalPages = Math.ceil(totalItems / ITEMS_PER_PAGE);
+  const paginatedTools = filteredTools.slice(
+    (currentPage - 1) * ITEMS_PER_PAGE,
+    currentPage * ITEMS_PER_PAGE
+  );
+
   return (
     <div className="dashboard-view">
       <section className="dashboard-title-section">
@@ -147,68 +170,136 @@ export default function Dashboard() {
         </p>
       </section>
 
-      {/* Categorized Listings */}
-      {CATEGORIES.map((cat, idx) => {
-        const catTools = ALL_TOOLS.filter((t) => cat.toolIds.includes(t.id));
-        return (
-          <div key={idx} style={{ marginBottom: "3rem" }}>
-            <h2
-              style={{
-                fontSize: "1.4rem",
-                fontWeight: 700,
-                marginBottom: "1.25rem",
-                color: "var(--text-primary)",
-                fontFamily: "var(--font-outfit)",
-                display: "flex",
-                alignItems: "center",
-                gap: "0.5rem",
-              }}
+      {/* Dashboard Controls (Search and Tabs) */}
+      <div className="dashboard-controls">
+        <TypingCarousel />
+        <div className="search-wrapper">
+          <span className="search-icon">🔍</span>
+          <input
+            type="text"
+            className="search-input"
+            placeholder="Search 32 developer tools..."
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+          />
+          {searchQuery && (
+            <button
+              className="search-clear"
+              onClick={() => setSearchQuery("")}
+              aria-label="Clear search"
             >
-              <span>{cat.icon}</span> {cat.title}
-            </h2>
-            <div className="grid-tools">
-              {catTools.map((tool) => (
-                <Link href={tool.path} key={tool.id} className="tool-card">
-                  <div className="tool-icon-wrapper">{tool.icon}</div>
-                  <h3 className="tool-card-title" style={{ fontSize: "1.1rem", fontWeight: 600, margin: "0.5rem 0" }}>{tool.name}</h3>
-                  <p className="tool-card-desc">{tool.description}</p>
+              ✕
+            </button>
+          )}
+        </div>
 
-                  <div className="tool-card-action">
-                    <span>Open Tool</span>
-                    <span>&rarr;</span>
-                  </div>
-
-                  {tool.badge && (
-                    <span
-                      style={{
-                        position: "absolute",
-                        top: "1rem",
-                        right: "1rem",
-                        background: "rgba(0, 242, 254, 0.1)",
-                        border: "1px solid rgba(0, 242, 254, 0.3)",
-                        color: "var(--neon-cyan)",
-                        fontSize: "0.75rem",
-                        padding: "0.25rem 0.5rem",
-                        borderRadius: "20px",
-                        fontWeight: 600,
-                      }}
-                    >
-                      {tool.badge}
-                    </span>
-                  )}
-                </Link>
-              ))}
-            </div>
+        <div className="category-tabs-container">
+          <div className="category-tabs">
+            {TABS.map((tab) => (
+              <button
+                key={tab.id}
+                className={`category-tab ${
+                  selectedCategory === tab.id ? "active" : ""
+                }`}
+                onClick={() => setSelectedCategory(tab.id)}
+              >
+                <span style={{ marginRight: "0.25rem" }}>{tab.icon}</span>{" "}
+                {tab.name}
+              </button>
+            ))}
           </div>
-        );
-      })}
+        </div>
+      </div>
+
+      {/* Tools Grid */}
+      <div className="grid-tools">
+        {paginatedTools.length > 0 ? (
+          paginatedTools.map((tool) => (
+            <Link href={tool.path} key={tool.id} className="tool-card">
+              <div className="tool-icon-wrapper">{tool.icon}</div>
+              <h3
+                className="tool-card-title"
+                style={{ fontSize: "1.1rem", fontWeight: 600, margin: "0.5rem 0" }}
+              >
+                {tool.name}
+              </h3>
+              <p className="tool-card-desc">{tool.description}</p>
+
+              <div className="tool-card-action">
+                <span>Open Tool</span>
+                <span>&rarr;</span>
+              </div>
+
+              {tool.badge && (
+                <span
+                  style={{
+                    position: "absolute",
+                    top: "1rem",
+                    right: "1rem",
+                    background: "rgba(0, 242, 254, 0.1)",
+                    border: "1px solid rgba(0, 242, 254, 0.3)",
+                    color: "var(--neon-cyan)",
+                    fontSize: "0.75rem",
+                    padding: "0.25rem 0.5rem",
+                    borderRadius: "20px",
+                    fontWeight: 600,
+                  }}
+                >
+                  {tool.badge}
+                </span>
+              )}
+            </Link>
+          ))
+        ) : (
+          <div className="no-results">
+            <div className="no-results-icon">🔍</div>
+            <h3 className="no-results-title">No tools found</h3>
+            <p>We couldn't find any tools matching "{searchQuery}" in this category.</p>
+          </div>
+        )}
+      </div>
+
+      {/* Pagination Controls */}
+      {totalPages > 1 && (
+        <div className="pagination-container">
+          <button
+            className="pagination-btn"
+            disabled={currentPage === 1}
+            onClick={() => setCurrentPage((prev) => prev - 1)}
+            aria-label="Previous page"
+          >
+            &larr; Prev
+          </button>
+
+          {Array.from({ length: totalPages }, (_, i) => i + 1).map((pageNum) => (
+            <button
+              key={pageNum}
+              className={`pagination-btn ${
+                currentPage === pageNum ? "active" : ""
+              }`}
+              onClick={() => setCurrentPage(pageNum)}
+            >
+              {pageNum}
+            </button>
+          ))}
+
+          <button
+            className="pagination-btn"
+            disabled={currentPage === totalPages}
+            onClick={() => setCurrentPage((prev) => prev + 1)}
+            aria-label="Next page"
+          >
+            Next &rarr;
+          </button>
+        </div>
+      )}
 
       {/* SEO Discovery Columns */}
-      <section className="seo-section" style={{ borderTop: "1px solid var(--border-color)", paddingTop: "3rem" }}>
+      <section className="seo-section">
         <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: "2rem" }}>
           
           {/* Comparisons Column */}
-          <div className="pane" style={{ background: "rgba(8, 10, 16, 0.3)" }}>
+          <div className="pane">
             <h3 style={{ fontSize: "1.2rem", fontWeight: 600, color: "var(--text-primary)", borderBottom: "1px solid var(--border-color)", paddingBottom: "0.5rem", marginBottom: "1rem" }}>
               ⚖️ Tool Comparisons
             </h3>
@@ -240,7 +331,7 @@ export default function Dashboard() {
           </div>
 
           {/* Guides Column */}
-          <div className="pane" style={{ background: "rgba(8, 10, 16, 0.3)" }}>
+          <div className="pane">
             <h3 style={{ fontSize: "1.2rem", fontWeight: 600, color: "var(--text-primary)", borderBottom: "1px solid var(--border-color)", paddingBottom: "0.5rem", marginBottom: "1rem" }}>
               📖 Developer Guides
             </h3>
@@ -272,7 +363,7 @@ export default function Dashboard() {
           </div>
 
           {/* Errors Reference Column */}
-          <div className="pane" style={{ background: "rgba(8, 10, 16, 0.3)", borderLeft: "3px solid var(--neon-pink)" }}>
+          <div className="pane" style={{ borderLeft: "3px solid var(--neon-pink)" }}>
             <h3 style={{ fontSize: "1.2rem", fontWeight: 600, color: "var(--text-primary)", borderBottom: "1px solid var(--border-color)", paddingBottom: "0.5rem", marginBottom: "1rem" }}>
               🔧 Debugging References
             </h3>

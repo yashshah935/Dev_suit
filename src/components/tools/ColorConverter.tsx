@@ -112,7 +112,7 @@ export default function ColorConverter() {
               backgroundColor: hex,
               boxShadow: "0 10px 30px rgba(0,0,0,0.4), 0 0 20px " + hex + "40",
               marginBottom: "1.5rem",
-              border: "4px solid rgba(255,255,255,0.08)"
+              border: "4px solid var(--border-color)"
             }}
           />
           <span className="option-label" style={{ marginBottom: "0.5rem" }}>Color Swatch Picker:</span>

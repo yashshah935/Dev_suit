@@ -155,7 +155,7 @@ export default function JsonValidator() {
           </div>
         </div>
 
-        <div className="pane" style={{ background: "rgba(13, 17, 28, 0.25)" }}>
+        <div className="pane">
           <div className="pane-header">
             <h2 className="pane-title">Analysis Result</h2>
           </div>
@@ -164,33 +164,32 @@ export default function JsonValidator() {
               <div className="status-panel error" style={{ margin: 0 }}>
                 <span className="status-icon">⚠️</span>
                 <div className="status-details">
-                  <span className="status-title">Syntax Validation Failed</span>
-                  <span className="status-message" style={{ fontFamily: "var(--font-mono)", fontSize: "0.85rem" }}>{error}</span>
-                  {errorLine && <span style={{ fontSize: "0.8rem", color: "var(--text-muted)", marginTop: "0.25rem" }}>Error spotted around line {errorLine}</span>}
+                  <span className="status-title">Syntax Error</span>
+                  <span className="status-message">{error}</span>
                 </div>
               </div>
             )}
 
             {stats && (
-              <div>
-                <div className="status-panel success" style={{ marginBottom: "1.5rem" }}>
-                  <span className="status-icon">✅</span>
+              <div style={{ display: "flex", flexDirection: "column", gap: "1.5rem" }}>
+                <div className="status-panel success" style={{ margin: 0 }}>
+                  <span className="status-icon">✓</span>
                   <div className="status-details">
-                    <span className="status-title">Perfect Syntax!</span>
+                    <span className="status-title">Valid JSON</span>
                     <span className="status-message">JSON document structure is 100% valid.</span>
                   </div>
                 </div>
                 
                 <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: "1rem" }}>
-                  <div className="pane" style={{ textAlign: "center", padding: "1rem", background: "rgba(255,255,255,0.02)" }}>
+                  <div className="pane" style={{ textAlign: "center", padding: "1rem", background: "var(--bg-nav-hover)" }}>
                     <div style={{ fontSize: "1.5rem", fontWeight: 700, color: "var(--neon-cyan)" }}>{stats.keys}</div>
                     <div style={{ fontSize: "0.75rem", color: "var(--text-secondary)", marginTop: "0.25rem" }}>Total Keys</div>
                   </div>
-                  <div className="pane" style={{ textAlign: "center", padding: "1rem", background: "rgba(255,255,255,0.02)" }}>
+                  <div className="pane" style={{ textAlign: "center", padding: "1rem", background: "var(--bg-nav-hover)" }}>
                     <div style={{ fontSize: "1.5rem", fontWeight: 700, color: "var(--neon-purple)" }}>{stats.depth}</div>
                     <div style={{ fontSize: "0.75rem", color: "var(--text-secondary)", marginTop: "0.25rem" }}>Max Depth</div>
                   </div>
-                  <div className="pane" style={{ textAlign: "center", padding: "1rem", background: "rgba(255,255,255,0.02)" }}>
+                  <div className="pane" style={{ textAlign: "center", padding: "1rem", background: "var(--bg-nav-hover)" }}>
                     <div style={{ fontSize: "1.5rem", fontWeight: 700, color: "var(--neon-pink)" }}>{(stats.size / 1024).toFixed(2)} KB</div>
                     <div style={{ fontSize: "0.75rem", color: "var(--text-secondary)", marginTop: "0.25rem" }}>Raw Size</div>
                   </div>

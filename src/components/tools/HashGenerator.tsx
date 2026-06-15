@@ -172,7 +172,7 @@ export default function HashGenerator() {
                   {copyFeedback === "md5" ? "Copied!" : "Copy MD5"}
                 </button>
               </div>
-              <div style={{ fontFamily: "var(--font-mono)", fontSize: "0.85rem", background: "rgba(0,0,0,0.25)", padding: "0.75rem", borderRadius: "6px", overflowX: "auto", border: "1px solid var(--border-color)", color: "var(--text-primary)" }}>
+              <div style={{ fontFamily: "var(--font-mono)", fontSize: "0.85rem", background: "var(--bg-input)", padding: "0.75rem", borderRadius: "6px", overflowX: "auto", border: "1px solid var(--border-color)", color: "var(--text-primary)" }}>
                 {hashes.md5}
               </div>
             </div>
@@ -189,7 +189,7 @@ export default function HashGenerator() {
                   {copyFeedback === "sha1" ? "Copied!" : "Copy SHA-1"}
                 </button>
               </div>
-              <div style={{ fontFamily: "var(--font-mono)", fontSize: "0.85rem", background: "rgba(0,0,0,0.25)", padding: "0.75rem", borderRadius: "6px", overflowX: "auto", border: "1px solid var(--border-color)", color: "var(--text-primary)" }}>
+              <div style={{ fontFamily: "var(--font-mono)", fontSize: "0.85rem", background: "var(--bg-input)", padding: "0.75rem", borderRadius: "6px", overflowX: "auto", border: "1px solid var(--border-color)", color: "var(--text-primary)" }}>
                 {hashes.sha1}
               </div>
             </div>
@@ -206,7 +206,7 @@ export default function HashGenerator() {
                   {copyFeedback === "sha256" ? "Copied!" : "Copy SHA-256"}
                 </button>
               </div>
-              <div style={{ fontFamily: "var(--font-mono)", fontSize: "0.85rem", background: "rgba(0,0,0,0.25)", padding: "0.75rem", borderRadius: "6px", overflowX: "auto", border: "1px solid var(--border-color)", color: "var(--text-primary)" }}>
+              <div style={{ fontFamily: "var(--font-mono)", fontSize: "0.85rem", background: "var(--bg-input)", padding: "0.75rem", borderRadius: "6px", overflowX: "auto", border: "1px solid var(--border-color)", color: "var(--text-primary)" }}>
                 {hashes.sha256}
               </div>
             </div>
@@ -223,7 +223,7 @@ export default function HashGenerator() {
                   {copyFeedback === "sha512" ? "Copied!" : "Copy SHA-512"}
                 </button>
               </div>
-              <div style={{ fontFamily: "var(--font-mono)", fontSize: "0.85rem", background: "rgba(0,0,0,0.25)", padding: "0.75rem", borderRadius: "6px", overflowX: "auto", border: "1px solid var(--border-color)", color: "var(--text-primary)" }}>
+              <div style={{ fontFamily: "var(--font-mono)", fontSize: "0.85rem", background: "var(--bg-input)", padding: "0.75rem", borderRadius: "6px", overflowX: "auto", border: "1px solid var(--border-color)", color: "var(--text-primary)" }}>
                 {hashes.sha512}
               </div>
             </div>

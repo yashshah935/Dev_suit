@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono, Outfit } from "next/font/google";
 import Link from "next/link";
 import { GoogleAnalytics } from "@next/third-parties/google";
+import ThemeToggle from "./components/ThemeToggle";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -32,6 +33,18 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className={`${geistSans.variable} ${geistMono.variable} ${outfit.variable}`}>
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: `
+          (function() {
+            try {
+              var theme = localStorage.getItem('theme');
+              if (theme === 'light') {
+                document.documentElement.classList.add('light-theme');
+              }
+            } catch (e) {}
+          })();
+        ` }} />
+      </head>
       <body>
         <div className="app-container">
           <header className="header">
@@ -139,6 +152,7 @@ export default function RootLayout({
                   <Link href="/errors/cron-expression-invalid-syntax" className="dropdown-item" style={{ borderLeft: "3px solid var(--neon-pink)" }}>Cron Syntax Error Fix</Link>
                 </div>
               </div>
+              <ThemeToggle />
             </nav>
           </header>
 

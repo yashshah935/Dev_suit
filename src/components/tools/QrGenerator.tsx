@@ -135,7 +135,7 @@ export default function QrGenerator() {
       )}
 
       <div className="pane" style={{ marginTop: "1.5rem", display: "flex", flexDirection: "column", alignItems: "center", padding: "2rem" }}>
-        <div style={{ background: "rgba(255,255,255,0.03)", padding: "1.5rem", borderRadius: "12px", border: "1px solid var(--border-color)", display: "flex", justifyContent: "center", alignItems: "center" }}>
+        <div style={{ background: "var(--bg-input)", padding: "1.5rem", borderRadius: "12px", border: "1px solid var(--border-color)", display: "flex", justifyContent: "center", alignItems: "center" }}>
           <canvas ref={canvasRef} style={{ maxWidth: "100%", height: "auto", borderRadius: "4px" }} />
         </div>
         <button className="btn-primary" onClick={handleDownload} style={{ marginTop: "1.5rem" }} disabled={!text}>

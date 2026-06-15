@@ -159,7 +159,7 @@ export default function YamlValidator() {
           </div>
         </div>
 
-        <div className="pane" style={{ background: "rgba(13, 17, 28, 0.25)" }}>
+        <div className="pane">
           <div className="pane-header">
             <h2 className="pane-title">Validation Status</h2>
           </div>
