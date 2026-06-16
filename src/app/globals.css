@@ -82,6 +82,15 @@
   --shadow-glass: 0 8px 32px 0 rgba(31, 38, 135, 0.08);
   --shadow-neon: 0 0 15px rgba(79, 172, 254, 0.15);
 
+  /* Overrides for neon text/glows in light theme for high accessibility contrast */
+  --neon-cyan: #0284c7;
+  --neon-purple: #7c3aed;
+  --neon-pink: #db2777;
+  
+  --primary-grad: linear-gradient(135deg, #1d4ed8 0%, #0284c7 100%);
+  --accent-grad: linear-gradient(135deg, #6d28d9 0%, #1d4ed8 100%);
+  --danger-grad: linear-gradient(135deg, #e11d48 0%, #ea580c 100%);
+
   /* Layout backgrounds & values */
   --bg-header: rgba(243, 244, 246, 0.85);
   --bg-dropdown: rgba(255, 255, 255, 0.95);
