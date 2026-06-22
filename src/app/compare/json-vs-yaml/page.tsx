@@ -90,7 +90,7 @@ tags:
           While **JSON** uses braces, brackets, and quotes to define data boundaries, **YAML** relies on line breaks and indentation spaces. Here is an example of the same dataset represented in both syntaxes:
         </p>
 
-        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "1.5rem", margin: "2rem 0" }}>
+        <div className="responsive-grid-2">
           <div>
             <h3 style={{ color: "var(--text-primary)", marginBottom: "0.5rem" }}>JSON Format</h3>
             <pre className="guide-code-box">{jsonExample}</pre>

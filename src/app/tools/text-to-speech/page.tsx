@@ -237,7 +237,7 @@ export default function TextToSpeech() {
         </Link>
       </div>
 
-      <div className="workspace-grid" style={{ gridTemplateColumns: "1.2fr 0.8fr" }}>
+      <div className="workspace-grid tts-grid">
         {/* Input Text Pane */}
         <div className="pane">
           <div className="pane-header">

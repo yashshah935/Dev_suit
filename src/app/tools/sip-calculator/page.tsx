@@ -220,7 +220,7 @@ export default function SipCalculator() {
         </span>
       </div>
 
-      <div className="workspace-grid" style={{ gridTemplateColumns: "1fr 1.5fr" }}>
+      <div className="workspace-grid sip-calculator-grid">
         {/* Left Side: Inputs */}
         <div className="pane">
           <h2 className="pane-title" style={{ borderBottom: "1px solid var(--border-color)", paddingBottom: "0.5rem" }}>
@@ -316,7 +316,7 @@ export default function SipCalculator() {
         {/* Right Side: Results Dashboard */}
         <div style={{ display: "flex", flexDirection: "column", gap: "1.5rem" }}>
           {/* Result Cards Grid */}
-          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "1rem" }}>
+          <div className="responsive-results-grid">
             <div className="pane" style={{ padding: "1.25rem", borderLeft: "4px solid var(--border-color)" }}>
               <span style={{ fontSize: "0.85rem", color: "var(--text-secondary)" }}>Total Invested</span>
               <span style={{ fontSize: "1.75rem", fontWeight: 700, margin: "0.25rem 0", color: "#e2e8f0" }}>
