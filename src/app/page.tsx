@@ -193,7 +193,7 @@ export default function Dashboard() {
           )}
         </div>
 
-        <div className="category-tabs-container">
+        <div className="category-tabs-container category-tabs-desktop">
           <div className="category-tabs">
             {TABS.map((tab) => (
               <button
@@ -208,6 +208,21 @@ export default function Dashboard() {
               </button>
             ))}
           </div>
+        </div>
+
+        <div className="category-select-mobile-container">
+          <span className="option-label" style={{ marginRight: "0.5rem" }}>Category:</span>
+          <select
+            className="select-custom category-select-mobile"
+            value={selectedCategory}
+            onChange={(e) => setSelectedCategory(e.target.value)}
+          >
+            {TABS.map((tab) => (
+              <option key={tab.id} value={tab.id}>
+                {tab.icon} {tab.name}
+              </option>
+            ))}
+          </select>
         </div>
       </div>
 
@@ -296,7 +311,7 @@ export default function Dashboard() {
 
       {/* SEO Discovery Columns */}
       <section className="seo-section">
-        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: "2rem" }}>
+        <div className="responsive-grid-3">
           
           {/* Comparisons Column */}
           <div className="pane">

@@ -83,7 +83,7 @@ This is **bold** text and [a link](https://example.com).`;
           While **HTML** is the underlying native standard of the World Wide Web, **Markdown** was created as a lightweight plain-text formatting syntax that developers can easily read and write, which compiles cleanly into HTML.
         </p>
 
-        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "1.5rem", margin: "2rem 0" }}>
+        <div className="responsive-grid-2">
           <div>
             <h3 style={{ color: "var(--text-primary)", marginBottom: "0.5rem" }}>Markdown Syntax Shorthand</h3>
             <pre className="guide-code-box">{mdExample}</pre>

@@ -52,7 +52,11 @@ export default function RootLayout({
               <div className="logo-icon">D</div>
               <span className="logo-text">DevSuite</span>
             </Link>
-            <nav className="header-links" style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
+            <input type="checkbox" id="nav-toggle" className="nav-toggle-checkbox" />
+            <label htmlFor="nav-toggle" className="nav-toggle-label" aria-label="Toggle navigation menu">
+              <span className="hamburger"></span>
+            </label>
+            <nav className="header-links">
               <Link href="/" className="nav-link">
                 Dashboard
               </Link>

@@ -77,7 +77,7 @@ export default async function ErrorPage({ params }: PageProps) {
         <h2 style={{ fontSize: "1.4rem", fontWeight: 600, color: "var(--text-primary)", marginBottom: "1rem" }}>
           Example Error & Fix
         </h2>
-        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "1.5rem", marginBottom: "2rem" }}>
+        <div className="responsive-grid-2" style={{ marginBottom: "2rem" }}>
           <div className="pane" style={{ borderTop: "3px solid var(--error)", background: "rgba(239, 68, 68, 0.04)" }}>
             <h3 style={{ fontSize: "0.95rem", color: "var(--error)", marginBottom: "0.5rem", fontWeight: 600 }}>❌ Malformed Payload</h3>
             <pre style={{

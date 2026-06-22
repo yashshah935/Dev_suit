@@ -90,7 +90,7 @@ export default function JsonVsXml() {
           Both **JSON** and **XML** serve the same underlying purpose: to serialize and transfer structured data across network sockets. However, they were designed in different eras with distinct architectural philosophies.
         </p>
 
-        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "1.5rem", margin: "2rem 0" }}>
+        <div className="responsive-grid-2">
           <div>
             <h3 style={{ color: "var(--text-primary)", marginBottom: "0.5rem" }}>JSON Representation</h3>
             <pre className="guide-code-box">{jsonExample}</pre>

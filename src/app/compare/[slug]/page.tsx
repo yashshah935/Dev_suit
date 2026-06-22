@@ -108,7 +108,7 @@ export default async function ComparePage({ params }: PageProps) {
         <h2 style={{ fontSize: "1.4rem", fontWeight: 600, color: "var(--text-primary)", marginBottom: "1rem" }}>
           Pros & Cons Contrast
         </h2>
-        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "2rem", marginBottom: "3rem" }}>
+        <div className="responsive-grid-2" style={{ marginBottom: "3rem" }}>
           
           {/* Tool A */}
           <div className="pane">
