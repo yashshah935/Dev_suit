@@ -44,6 +44,11 @@ export default function RootLayout({
             } catch (e) {}
           })();
         ` }} />
+        <script
+          async
+          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1765001200513447"
+          crossOrigin="anonymous"
+        />
       </head>
       <body>
         <div className="app-container">
