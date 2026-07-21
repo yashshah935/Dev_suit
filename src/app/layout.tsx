@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono, Outfit } from "next/font/google";
 import Link from "next/link";
+import Script from "next/script";
 import { GoogleAnalytics } from "@next/third-parties/google";
 import ThemeToggle from "./components/ThemeToggle";
 import "./globals.css";
@@ -32,7 +33,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`${geistSans.variable} ${geistMono.variable} ${outfit.variable}`}>
+    <html lang="en" suppressHydrationWarning className={`${geistSans.variable} ${geistMono.variable} ${outfit.variable}`}>
       <head>
         <script dangerouslySetInnerHTML={{ __html: `
           (function() {
@@ -44,13 +45,14 @@ export default function RootLayout({
             } catch (e) {}
           })();
         ` }} />
-        <script
+      </head>
+      <body>
+        <Script
           async
           src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1765001200513447"
           crossOrigin="anonymous"
+          strategy="afterInteractive"
         />
-      </head>
-      <body>
         <div className="app-container">
           <header className="header">
             <Link href="/" className="logo-container">
